@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Button,
   Card,
@@ -18,7 +18,7 @@ const getFreshModel = () => ({ name: "", email: "" });
 
 export default function Login() {
  
-  const { context, setContext } = useStateContext();
+  const { context, setContext, resetContext } = useStateContext();
   const navigate = useNavigate();
 
   const {
@@ -29,6 +29,10 @@ export default function Login() {
     handleInputChange,
   } = useForm(getFreshModel);
 
+  useEffect(() => {
+    resetContext()
+  }, [])
+  
   const login = e => {
       e.preventDefault();
       if (validate())
@@ -37,6 +41,7 @@ export default function Login() {
         .post(values)
         .then(res => {
           setContext({ participantId: res.data.participantId })
+          // console.log(context);
           navigate("/quiz")
         }
           
